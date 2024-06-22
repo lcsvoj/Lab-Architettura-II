@@ -1,0 +1,27 @@
+# The case variable value 0, 1, or 2 is used to index an element of the Jump Table
+# Must multiply case variable value by 4 since the Jump Table is an array of words
+# int C = 2;	// C = 0, 1, or 2
+# $t1 = JumpTable[C*4];
+# jr	$t1
+		.data
+JUMP_TABLE:	.word	case0, case1, case2
+	.text
+main:
+		# Let $t0 hold the switch value 0, 1, or 2
+				bltz	$t0, END_SWITCH
+				li	$t1, 2
+				bgt	$t0, $t1, END_SWITCH
+		# Multiply switch value 0, 1, or 2 by 4
+				# shift left logical (sll). mutl ( *4)
+				sll	$t0, $t0, 2	# set $t0 to result of shifting $t0 left of the specified number ob bits
+				la	$a0, JUMP_TABLE
+				add	$a0, $a0, $t0
+				lw	$t2, 0($a0)
+				jr	$t2
+case0:		add	$s0, $s0, 1
+				b	END_SWITCH
+case1:		add	$s0, $s0, 2
+				b	END_SWITCH
+case2:		add	$s0, $s0, 3
+				b	END_SWITCH
+END_SWITCH:
