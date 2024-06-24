@@ -24,8 +24,7 @@ ask_N:
 	syscall
 	move $s0 $v0		# $s0 <- N
 	
-	# if 1 <= N <= 50 , proceed; otherwise print an error message and ask again
-	bgt $s0 50 err_N_max
+	bgt $s0 50 err_N_max	# if 1 <= N <= 50 , proceed; otherwise print an error message and ask again
 	blt $s0 1 err_N_min
 	j populate_array
 	
